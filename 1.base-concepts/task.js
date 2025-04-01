@@ -16,3 +16,4 @@ function solveEquation(a, b, c) {
   const x2 = (-b - sqrtD) / (2 * a);
   return [x1, x2];
 }
+solveEquation = solveEquation;
