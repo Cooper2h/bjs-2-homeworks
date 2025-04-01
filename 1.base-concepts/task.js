@@ -32,4 +32,4 @@ function calculateTotalMortgage(percent, contribution, amount, countMonths) {
   return +total.toFixed(2);
 }
 
-calculateTotalMortgage = calculateTotalMortgage;
+window.calculateTotalMortgage = calculateTotalMortgage;
