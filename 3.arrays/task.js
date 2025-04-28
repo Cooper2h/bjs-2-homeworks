@@ -17,5 +17,3 @@ function getUsersNameInAgeRange(users, gender) {
 
   return averageAge;
 }
-
-export { compareArrays, getUsersNameInAgeRange };
