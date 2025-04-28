@@ -1,9 +1,7 @@
-// Задача 1
 function getPercents(percent, number) {
   return (percent / 100) * number;
 }
 
-// Задача 2
 function calculateTotalMortgage(percent, contribution, amount, countMonths) {
   let loanBody = amount - contribution;
   let monthlyRate = (percent / 100) / 12;
