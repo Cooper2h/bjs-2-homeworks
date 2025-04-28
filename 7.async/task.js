@@ -21,6 +21,9 @@ class AlarmClock {
   }
 
   addClock(time, callback, id) {
+    if (time === undefined || callback === undefined) {
+      throw new Error('Отсутствуют обязательные параметры');
+    }
     if (id === undefined) {
       throw new Error('Параметр id не передан');
     }
@@ -46,11 +49,13 @@ class AlarmClock {
     if (this.intervalId !== null) {
       return;
     }
+
     const checkClock = (clock) => {
       if (clock.time === this.getCurrentFormattedTime()) {
         clock.callback();
       }
     };
+
     this.intervalId = setInterval(() => {
       this.alarmCollection.forEach(checkClock);
     }, 1000);
@@ -67,8 +72,10 @@ class AlarmClock {
     this.stop();
     this.alarmCollection = [];
   }
+
+  clearAlarmsWithoutTime() {
+    this.alarmCollection = this.alarmCollection.filter(clock => clock.time !== undefined);
+  }
 }
 
 window.AlarmClock = AlarmClock;
-
-// ← здесь обязательно должна быть пустая строка!
