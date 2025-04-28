@@ -21,11 +21,16 @@ class AlarmClock {
     }
 
     addClock(time, callback, id) {
-        if (id !== undefined && this.alarmCollection.some(clock => clock.id === id)) {
+        if (id === undefined) {
+            throw new Error('Параметр id не передан');
+        }
+
+        if (this.alarmCollection.some(clock => clock.id === id)) {
             console.error('Звонок с таким id уже существует');
             return;
         }
-        this.alarmCollection.push({ time, callback, id });
+
+        this.alarmCollection.push({ id, time, callback });
     }
 
     removeClock(id) {
@@ -73,4 +78,5 @@ class AlarmClock {
     }
 }
 
+// чтобы тесты видели класс
 window.AlarmClock = AlarmClock;
