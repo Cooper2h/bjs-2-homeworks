@@ -29,26 +29,31 @@ function cachingDecoratorNew(func) {
 
 //Задача № 2
 function debounceDecoratorNew(func, delay) {
-  let timeoutId;
+  let timeoutId = null;
+  let isFirstCall = true;
+
   function wrapper(...args) {
     wrapper.allCount++;
 
-    if (!timeoutId) {
+    if (isFirstCall) {
       func(...args);
       wrapper.count++;
+      isFirstCall = false;
+      return;
     }
 
-    clearTimeout(timeoutId);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
 
     timeoutId = setTimeout(() => {
-      timeoutId = null;
       func(...args);
       wrapper.count++;
     }, delay);
   }
 
-  wrapper.count = 0;
-  wrapper.allCount = 0;
+  wrapper.count = 0;      // количество реальных запусков функции
+  wrapper.allCount = 0;   // количество всех вызовов обёртки
 
   return wrapper;
 }
