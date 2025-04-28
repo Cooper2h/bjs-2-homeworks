@@ -1,5 +1,5 @@
 function sleep(milliseconds) {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 async function getUserData(userId) {
@@ -24,12 +24,10 @@ class AlarmClock {
     if (id === undefined) {
       throw new Error('Параметр id не передан');
     }
-
     if (this.alarmCollection.some(clock => clock.id === id)) {
       console.error('Звонок с таким id уже существует');
       return;
     }
-
     this.alarmCollection.push({ time, callback, id });
   }
 
@@ -56,7 +54,7 @@ class AlarmClock {
     };
 
     this.intervalId = setInterval(() => {
-      this.alarmCollection.forEach(checkClock);
+      this.alarmCollection.forEach(clock => checkClock(clock));
     }, 1000);
   }
 
@@ -65,13 +63,3 @@ class AlarmClock {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
-  }
-
-  resetAllCalls() {
-    this.stop();
-    this.alarmCollection = [];
-  }
-}
-
-// Обязательно экспортировать в window !!!
-window.AlarmClock = AlarmClock;
