@@ -21,10 +21,7 @@ class AlarmClock {
     }
 
     addClock(time, callback, id) {
-        if (id === undefined) {
-            throw new Error('Параметр id не передан');
-        }
-        if (this.alarmCollection.some(clock => clock.id === id)) {
+        if (id !== undefined && this.alarmCollection.some(clock => clock.id === id)) {
             console.error('Звонок с таким id уже существует');
             return;
         }
@@ -37,16 +34,16 @@ class AlarmClock {
 
     getCurrentFormattedTime() {
         const now = new Date();
-        return now.toLocaleTimeString('ru-RU', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
     }
 
     start() {
         if (this.intervalId !== null) {
             return;
         }
+
         this.intervalId = setInterval(() => {
             const currentTime = this.getCurrentFormattedTime();
             this.alarmCollection.forEach(clock => {
@@ -64,7 +61,16 @@ class AlarmClock {
         }
     }
 
-    resetAllCalls() {
+    printAlarms() {
+        this.alarmCollection.forEach(clock => {
+            console.log(`Будильник №${clock.id} заведен на ${clock.time}`);
+        });
+    }
+
+    clearAlarms() {
+        this.stop();
         this.alarmCollection = [];
     }
 }
+
+window.AlarmClock = AlarmClock;
