@@ -24,19 +24,17 @@ class AlarmClock {
     if (id === undefined) {
       throw new Error('Параметр id не передан');
     }
-    if (time === undefined) {
-      throw new Error('Время не передано');
-    }
     if (typeof callback !== 'function') {
       throw new Error('callback должен быть функцией');
     }
-
+    if (!time) {
+      throw new Error('Время не передано');
+    }
     if (this.alarmCollection.some(clock => clock.id === id)) {
-      console.error('Будильник с таким id уже существует');
+      console.warn('Будильник с таким id уже существует');
       return;
     }
-
-    this.alarmCollection.push({ time, callback, id });
+    this.alarmCollection.push({ id, time, callback, canCall: true });
   }
 
   removeClock(id) {
@@ -55,14 +53,13 @@ class AlarmClock {
       return;
     }
 
-    const checkClock = (clock) => {
-      if (clock.time === this.getCurrentFormattedTime()) {
-        clock.callback();
-      }
-    };
-
     this.intervalId = setInterval(() => {
-      this.alarmCollection.forEach(checkClock);
+      this.alarmCollection.forEach(clock => {
+        if (clock.time === this.getCurrentFormattedTime() && clock.canCall) {
+          clock.canCall = false;
+          clock.callback();
+        }
+      });
     }, 1000);
   }
 
@@ -74,6 +71,10 @@ class AlarmClock {
   }
 
   resetAllCalls() {
+    this.alarmCollection.forEach(clock => clock.canCall = true);
+  }
+
+  clearAlarms() {
     this.stop();
     this.alarmCollection = [];
   }
