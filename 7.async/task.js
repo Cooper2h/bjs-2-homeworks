@@ -24,13 +24,11 @@ class AlarmClock {
     if (id === undefined) {
       throw new Error('Параметр id не передан');
     }
-
+    if (time === undefined) {
+      throw new Error('Время не передано');
+    }
     if (typeof callback !== 'function') {
       throw new Error('callback должен быть функцией');
-    }
-
-    if (!time) {
-      throw new Error('Время не передано');
     }
 
     if (this.alarmCollection.some(clock => clock.id === id)) {
@@ -64,7 +62,7 @@ class AlarmClock {
     };
 
     this.intervalId = setInterval(() => {
-      this.alarmCollection.forEach(clock => checkClock(clock));
+      this.alarmCollection.forEach(checkClock);
     }, 1000);
   }
 
