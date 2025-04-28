@@ -20,25 +20,26 @@ class AlarmClock {
     this.intervalId = null;
   }
 
-  addClock(time, callback, id) {
-    if (id === undefined) {
-      throw new Error('Параметр id не передан');
+  addClock(time, callback) {
+    if (!time || !callback) {
+      throw new Error('Отсутствуют обязательные аргументы');
     }
     if (typeof callback !== 'function') {
       throw new Error('callback должен быть функцией');
     }
-    if (!time) {
-      throw new Error('Время не передано');
+    if (this.alarmCollection.some(clock => clock.time === time)) {
+      console.warn('Уже присутствует звонок на это же время');
     }
-    if (this.alarmCollection.some(clock => clock.id === id)) {
-      console.warn('Будильник с таким id уже существует');
-      return;
-    }
-    this.alarmCollection.push({ id, time, callback, canCall: true });
+
+    this.alarmCollection.push({
+      time,
+      callback,
+      canCall: true
+    });
   }
 
-  removeClock(id) {
-    this.alarmCollection = this.alarmCollection.filter(clock => clock.id !== id);
+  removeClock(time) {
+    this.alarmCollection = this.alarmCollection.filter(clock => clock.time !== time);
   }
 
   getCurrentFormattedTime() {
