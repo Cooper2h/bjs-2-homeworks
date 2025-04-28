@@ -24,11 +24,13 @@ class AlarmClock {
         if (id === undefined) {
             throw new Error('Параметр id не передан');
         }
+
         if (this.alarmCollection.some(clock => clock.id === id)) {
             console.error('Звонок с таким id уже существует');
             return;
         }
-        this.alarmCollection.push({ id, time, callback });
+
+        this.alarmCollection.push({ time, callback, id });
     }
 
     removeClock(id) {
@@ -48,4 +50,27 @@ class AlarmClock {
         }
 
         const checkClock = (clock) => {
-            if (clock
+            if (clock.time === this.getCurrentFormattedTime()) {
+                clock.callback();
+            }
+        };
+
+        this.intervalId = setInterval(() => {
+            this.alarmCollection.forEach(clock => checkClock(clock));
+        }, 1000);
+    }
+
+    stop() {
+        if (this.intervalId !== null) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+
+    resetAllCalls() {
+        this.stop();
+        this.alarmCollection = [];
+    }
+}
+
+window.AlarmClock = AlarmClock;
