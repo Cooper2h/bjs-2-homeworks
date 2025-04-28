@@ -30,25 +30,30 @@ function cachingDecoratorNew(func) {
 //Задача № 2
 function debounceDecoratorNew(func, delay) {
   let timeoutId = null;
+  let isFirstCall = true;
 
   function wrapper(...args) {
     wrapper.allCount++;
 
-    if (timeoutId === null) {
+    if (isFirstCall) {
       func(...args);
       wrapper.count++;
+      isFirstCall = false;
     }
 
-    clearTimeout(timeoutId);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
 
     timeoutId = setTimeout(() => {
-      timeoutId = null;
+      func(...args);
+      wrapper.count++;
+      isFirstCall = true; // сбрасываем флаг после отложенного вызова
     }, delay);
   }
 
-  wrapper.count = 0;     // сколько реально было вызовов функции
-  wrapper.allCount = 0;  // сколько раз пытались вызвать
+  wrapper.count = 0;     // сколько раз реально вызвали функцию
+  wrapper.allCount = 0;  // сколько всего было вызовов-декораторов
 
   return wrapper;
-
 }
