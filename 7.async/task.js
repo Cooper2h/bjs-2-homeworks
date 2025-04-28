@@ -24,12 +24,10 @@ class AlarmClock {
         if (id === undefined) {
             throw new Error('Параметр id не передан');
         }
-
         if (this.alarmCollection.some(clock => clock.id === id)) {
             console.error('Звонок с таким id уже существует');
             return;
         }
-
         this.alarmCollection.push({ id, time, callback });
     }
 
@@ -49,34 +47,5 @@ class AlarmClock {
             return;
         }
 
-        this.intervalId = setInterval(() => {
-            const currentTime = this.getCurrentFormattedTime();
-            this.alarmCollection.forEach(clock => {
-                if (clock.time === currentTime) {
-                    clock.callback();
-                }
-            });
-        }, 1000);
-    }
-
-    stop() {
-        if (this.intervalId !== null) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-        }
-    }
-
-    printAlarms() {
-        this.alarmCollection.forEach(clock => {
-            console.log(`Будильник №${clock.id} заведен на ${clock.time}`);
-        });
-    }
-
-    clearAlarms() {
-        this.stop();
-        this.alarmCollection = [];
-    }
-}
-
-// чтобы тесты видели класс
-window.AlarmClock = AlarmClock;
+        const checkClock = (clock) => {
+            if (clock
