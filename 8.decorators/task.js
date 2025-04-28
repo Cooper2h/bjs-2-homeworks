@@ -29,7 +29,7 @@ function cachingDecoratorNew(func) {
 
 //Задача № 2
 function debounceDecoratorNew(func, delay) {
-  let timeoutId = null;
+  let timeoutId;
   function wrapper(...args) {
     wrapper.allCount++;
 
@@ -41,9 +41,9 @@ function debounceDecoratorNew(func, delay) {
     clearTimeout(timeoutId);
 
     timeoutId = setTimeout(() => {
+      timeoutId = null;
       func(...args);
       wrapper.count++;
-      timeoutId = null;
     }, delay);
   }
 
