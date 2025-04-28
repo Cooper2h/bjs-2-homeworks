@@ -26,3 +26,5 @@ Student.prototype.exclude = function(reason) {
   this.marks = null;
   this.excluded = reason;
 };
+
+window.Student = Student;
