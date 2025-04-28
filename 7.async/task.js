@@ -70,3 +70,5 @@ class AlarmClock {
 }
 
 window.AlarmClock = AlarmClock;
+
+// ← здесь обязательно должна быть пустая строка!
