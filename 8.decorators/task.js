@@ -39,6 +39,7 @@ function debounceDecoratorNew(func, delay) {
       func(...args);
       wrapper.count++;
       isFirstCall = false;
+      return;
     }
 
     if (timeoutId) {
@@ -48,12 +49,12 @@ function debounceDecoratorNew(func, delay) {
     timeoutId = setTimeout(() => {
       func(...args);
       wrapper.count++;
-      isFirstCall = true; // сбрасываем флаг после отложенного вызова
+      isFirstCall = true; // сбрасываем после отложенного вызова
     }, delay);
   }
 
-  wrapper.count = 0;     // сколько раз реально вызвали функцию
-  wrapper.allCount = 0;  // сколько всего было вызовов-декораторов
+  wrapper.count = 0;     // сколько раз фактически вызвали func
+  wrapper.allCount = 0;  // сколько раз вызывали обертку
 
   return wrapper;
 }
